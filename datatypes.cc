@@ -16,9 +16,10 @@ using v8::Exception;
 
 void init(Local<Object> exports) {
 
-  CheckType::Init(exports);
+  
   NODE_SET_METHOD(exports, "isInteger", CheckType::IsInteger);  
   NODE_SET_METHOD(exports, "isFloat", CheckType::IsFloat);
+  NODE_SET_METHOD(exports, "inArray", CheckType::InArray);
 }
 
   NODE_MODULE(datachecks, init)

@@ -9,15 +9,14 @@ namespace datachecks {
 
 class CheckType : public node::ObjectWrap {
  public:
-  static void Init(v8::Local<v8::Object> exports);
+
   static void IsFloat(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void IsInteger(const v8::FunctionCallbackInfo<v8::Value>& args);
+  static void InArray(const v8::FunctionCallbackInfo<v8::Value>& args);
 
  private:
-  CheckType(double value = 0);
+  CheckType();
   ~CheckType();
-
-  double value_;
 
 };
 
