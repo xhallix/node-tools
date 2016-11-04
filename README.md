@@ -12,7 +12,6 @@ This is more a fun, then a real project - I'd like to play around with node modu
 const datatypes = require('../build/Release/datatypes');
 datatypes.isInteger("22");
 datatypes.isFloat(2.22);
-datatypes.inArray([1,2,3],5);
 datatypes.inArray([1,2,3],2);
 ```
 
