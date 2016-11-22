@@ -13,6 +13,7 @@ class CheckType : public node::ObjectWrap {
   static void IsFloat(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void IsInteger(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void InArray(const v8::FunctionCallbackInfo<v8::Value>& args);
+  static bool CompareObjects(v8::Isolate *isolate, v8::Local<v8::Value> val, v8::Local<v8::Object> valToCompare);
 
  private:
   CheckType();

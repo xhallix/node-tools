@@ -15,6 +15,11 @@ datatypes.isFloat(2.22);
 datatypes.inArray([1,2,3],2);
 ```
 
+# Todo
+
+- snake_case
+
+
 ## Usage
 
 1. Configure node-gyp (only once)

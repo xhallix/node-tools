@@ -13,6 +13,9 @@ using v8::String;
 using v8::Value;
 using v8::Exception;
 using v8::Array;
+using v8::Handle;
+using v8::Context;
+using v8::PropertyAttribute;
 
   CheckType::CheckType() {}
   CheckType::~CheckType() {}
@@ -62,6 +65,37 @@ using v8::Array;
     args.GetReturnValue().Set(False(isolate));  
   }
 
+
+  //
+  //  CompareObjects in the local context, if they are equal
+  //
+  bool CheckType::CompareObjects(Isolate *isolate, Local<Value> val, Local<Object> valToCompare)
+  {
+    Local<Context> context = isolate->GetCurrentContext();
+    Local<Object> obj = val->ToObject(context).ToLocalChecked();
+    Local<Object> objToCompare = valToCompare->ToObject(context).ToLocalChecked();
+    Local<Array> props = obj->GetOwnPropertyNames(context).ToLocalChecked();
+    Local<Array> propsToCompare = objToCompare->GetOwnPropertyNames(context).ToLocalChecked();
+
+    if(props->Length() != propsToCompare->Length()) {      
+      return false;
+    }
+
+    for(int i = 0, l = props->Length(); i < l; i++) {
+      Local<Value> localKey = props->Get(i);
+      Local<Value> localVal = obj->Get(context, localKey).ToLocalChecked();
+      Local<Value> localKeyToCompare = propsToCompare->Get(i);
+      Local<Value> localValToCompare = objToCompare->Get(context, localKey).ToLocalChecked();
+      if(localKey != localKeyToCompare || localVal != localValToCompare) {
+        return false ;
+      }
+    }
+    return true;
+  }
+
+  //
+  //  Checks if the given value is in the array
+  //
   void CheckType::InArray(const FunctionCallbackInfo<Value>& args) 
   {
     Isolate* isolate = args.GetIsolate();
@@ -71,7 +105,6 @@ using v8::Array;
       ));
       return;
     }
-
     if(!args[0]->IsArray()) {
       isolate->ThrowException(Exception::TypeError(
         String::NewFromUtf8(isolate, "Expected Type array as first argument")
@@ -79,11 +112,22 @@ using v8::Array;
       return;
     }
 
-
     Local<Array> jArray = args[0].As<Array>();
-
     for(uint i=0; i < jArray->Length(); i++) {
        Local<Value> val = jArray->Get(i);
+    
+       // compare objects
+       if(val->IsObject()) {
+         Local<Object> valToCompare = args[1].As<Object>();
+          if(CheckType::CompareObjects(isolate, val, valToCompare) == false) {
+            args.GetReturnValue().Set(False(isolate));
+              return;
+          }
+           args.GetReturnValue().Set(True(isolate));
+           return;
+       }
+       
+    
        if(val == args[1]) {
         args.GetReturnValue().Set(True(isolate));
         return;
@@ -91,7 +135,6 @@ using v8::Array;
     }
     args.GetReturnValue().Set(False(isolate));
     return;
-
   }
 
 } 
