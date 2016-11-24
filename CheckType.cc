@@ -115,8 +115,6 @@ using v8::PropertyAttribute;
     Local<Array> jArray = args[0].As<Array>();
     for(uint i=0; i < jArray->Length(); i++) {
        Local<Value> val = jArray->Get(i);
-    
-       // compare objects
        if(val->IsObject()) {
          Local<Object> valToCompare = args[1].As<Object>();
           if(CheckType::CompareObjects(isolate, val, valToCompare) == false) {
@@ -126,8 +124,6 @@ using v8::PropertyAttribute;
            args.GetReturnValue().Set(True(isolate));
            return;
        }
-       
-    
        if(val == args[1]) {
         args.GetReturnValue().Set(True(isolate));
         return;

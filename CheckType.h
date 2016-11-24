@@ -1,6 +1,5 @@
-// myobject.h
-#ifndef MYOBJECT_H
-#define MYOBJECT_H
+#ifndef CHECKTYPE_H
+#define CHECKTYPE_H
 
 #include <node.h>
 #include <node_object_wrap.h>
