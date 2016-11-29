@@ -44,6 +44,11 @@ namespace stringutils {
   {
     std::string transformedString = "";
      for(uint i=0; i < originString.size(); i++) { 
+      
+      if(iswspace(originString[i])) {
+        continue;
+      }
+
       if(isupper(originString[i])) {
        transformedString += "_";
        transformedString += tolower(originString[i]);
